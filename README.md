@@ -24,6 +24,8 @@ echo "otpauth://totp/Example%20OTP?secret=verysecret&algorithm=SHA1&digits=6&per
 pbpaste | topt
 # if you're in linux (requires xsel)
 xsel --clipboard --output | topt
+# get secrets from keyring
+lssecret -s | grep otpauth:// | sed "s/Secret:\t//g" | topt --table
 ```
 
 ## Flags
