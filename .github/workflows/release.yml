@@ -1,0 +1,36 @@
+name: build
+
+on:
+  workflow_dispatch:
+  release:
+    types: [ created ]
+
+permissions:
+  contents: write
+
+jobs:
+  xgo:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build
+        uses: crazy-max/ghaction-xgo@v3
+        with:
+          xgo_version: latest
+          go_version: 1.23.1
+          dest: build
+          prefix: topt
+          targets: windows/amd64,linux/amd64,linux/arm64,darwin/arm64
+          v: false
+          x: true
+          race: false
+          buildmode: default
+
+      - name: Release binary to GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/*
